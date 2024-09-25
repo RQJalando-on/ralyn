@@ -184,21 +184,40 @@ The output consists of the details of the celebrities ranked 10 to 20. It shows 
 a. Import the excel file into your RStudio.
 What is the R script?
 ```{r}
+library(openxlsx)
+hotels_vienna <- read.xlsx("/cloud/project/hotels-vienna.xlsx")
 ```
 
 
 b. How many dimensions does the dataset have?
 What is the R script? WHat is its output?
+```{r}
+dim(hotels_vienna)
+```
+
 
 c. Select columns country, neighbourhood,
 price, stars, accomodation_type, and
 ratings. Write the R script.
+```{r}
+selected_data <- hotels_vienna[, c("country", "neighbourhood", "price", "stars", "accommodation_type", "rating")]
+```
+
 
 d. Save the data as **new.RData to your RStudio. Write the
 R script.
+```{r}
+save(selected_data, file = "new.RData")
+```
 
 e. Display the first six rows and last six rows of the
 new.RData. What is the R script?
+```{r}
+load("new.RData")
+head(selected_data, 6)
+tail(selected_data, 6)
+```
+
 
 10. Create a list of ten (10) vegetables you ate during your lifetime. If none, just list down.
 a. Write the R scripts and its output.
