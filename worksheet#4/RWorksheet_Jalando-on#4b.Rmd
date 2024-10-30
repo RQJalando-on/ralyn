@@ -1,0 +1,92 @@
+---
+title: "RWork-sheet_jalando-on#4b"
+author: "Ralyn Queen Jalando-on"
+date: "2024-10-30"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+**USING FOR LOOP FUNCTION**
+
+1. Using the for loop, create an R script that will display a 5x5 matrix as shown in
+Figure 1. It must contain vectorA = [1,2,3,4,5] and a 5 x 5 zero matrix.
+```{r}
+matrixVA <- matrix(0, nrow = 5, ncol = 5)
+vectorA <- c(1, 2, 3, 4, 5)
+
+for (i in 1:5) {
+  for (j in 1:5) {
+    matrixVA[i, j] <- abs(i - j)
+  }
+}
+
+print(matrixVA)
+  
+```
+
+2. Print the string "*" using for() function. The output should be the same as shown
+in Figure
+```{r}
+rows <- 5
+
+for (i in 1:rows) {
+  cat(rep("''*''", i), "\n")
+}
+```
+3. Get an input from the user to print the Fibonacci sequence starting from the 1st input
+up to 500. Use repeat and break statements. Write the R Scripts and its output.
+```{r}
+
+```
+**USING BASIC GRAPHICS (plot(),barplot(),pie(),hist())**
+
+4. Import the dataset as shown in Figure 1 you have created previously.
+a. What is the R script for importing an excel or a csv file? Display the first 6 rows of
+the dataset? Show your codes and its result
+```{r}
+library(readr)
+data <- read_csv("/cloud/project/shoesizes.csv")
+data
+```
+b. Create a subset for gender(female and male). How many observations are there in
+Male? How about in Female? Write the R scripts and its output.
+```{r}
+
+df <- data.frame(
+  Shoe_size = c(6.5, 9.0, 8.5, 8.5, 10.5, 7.0, 9.5, 9.0, 13.0, 7.5, 10.5, 8.5, 12.0, 10.5,
+                13.0, 11.5, 8.5, 5.0, 10.0, 6.5, 7.5, 8.5, 10.5, 8.5, 10.5, 11.0, 9.0, 13.0),
+  Height = c(66.0, 68.0, 64.5, 65.0, 70.0, 64.0, 70.0, 71.0, 72.0, 64.0, 74.5, 67.0, 71.0, 71.0,
+             77.0, 72.0, 59.0, 62.0, 72.0, 66.0, 64.0, 67.0, 73.0, 69.0, 72.0, 70.0, 69.0, 70.0),
+  Gender = c("F", "F", "F", "F", "M", "F", "F", "F", "M", "F", "M", "F", "M", "M",
+             "M", "M", "F", "F", "M", "F", "F", "M", "M", "F", "M", "M", "M", "M")
+)
+
+female_subset <- subset(df, Gender == "F")
+male_subset <- subset(df, Gender == "M")
+
+num_females <- nrow(female_subset)
+num_males <- nrow(male_subset)
+
+cat("Number of observations in Female:", num_females, "\n")
+
+cat("Number of observations in Male:", num_males, "\n")
+```
+c. Create a graph for the number of males and females for Household Data. Use plot(),
+chart type = barplot. Make sure to place title, legends, and colors. Write the R scripts and
+its result.
+```{r}
+gender_counts <- c(Female = 14, Male = 14) 
+
+barplot(
+  gender_counts,
+  main = "Number of Male and Female in Household Data",  
+  xlab = "Gender",                                        
+  ylab = "Count",                                         
+  col = c("blue", "red"),                       
+  legend.text = c("Female", "Male"),                    
+  beside = TRUE                                           
+)
+```
+
