@@ -84,10 +84,95 @@ barplot(
   main = "Number of Male and Female in Household Data",  
   xlab = "Gender",                                        
   ylab = "Count",                                         
-  col = c("blue", "red"),                       
+  col = c("#b4dd1e", "#9746f2"),                       
   legend.text = c("Female", "Male"),                    
   beside = TRUE                                           
 )
 ```
-this is a graph
+5. The monthly income of Dela Cruz family was spent on the following:
+a. Create a piechart that will include labels in percentage.Add some colors and title of
+the chart. Write the R scripts and show its output.
+```{r}
+categories <- c("Food", "Electricity", "Savings", "Miscellaneous")
+values <- c(60, 10, 5, 25)
+
+pie_chart <- pie(values, 
+                  labels = paste(categories, "(", values, ")", sep = ""), 
+                  col = c("#D3B99F", "#EF8354", "#0F7173", "#DF3B57"),
+                  main = "Monthly Income Distribution of Dela Cruz Family")
+
+percentages <- round(values / sum(values) * 100, 1)
+text(0, 5, paste(percentages, "%"), cex = 1.2, pos = 3)
+
+```
+
+6. Use the iris dataset.
+data(iris)
+a. Check for the structure of the dataset using the str() function. Describe what you
+have seen in the output.
+```{r}
+data(iris)
+str(iris)
+```
+The iris dataset is a data frame with 150 obs and 5 columns. Four of these columns contain numeric measurements: Sepal.Length, Sepal.Width, Petal.Length, and Petal.Width, which describe the physical features of iris flowers. The fifth column, Species, is a category that includes three types of iris: "setosa," "versicolor," and "virginica." 
+
+b. Create an R object that will contain the mean of the sepal.length,
+sepal.width,petal.length,and petal.width. What is the R script and its result?
+```{r}
+mean_values <- colMeans(iris[, 1:4])
+mean_values
+```
+c. Create a pie chart for the Species distribution. Add title, legends, and colors. Write
+the R script and its result.
+```{r}
+data(iris)
+
+species_counts <- table(iris$Species)
+
+pie(species_counts,
+    main = "Species Distribution in Iris Dataset",
+    col = c("#6d98ba", "#D3B99F", "#C17767"),
+    labels = paste(names(species_counts), "\n", species_counts))
+legend("topright", legend = names(species_counts), fill = c("#6d98ba", "#D3B99F", "#C17767"))
+
+```
+
+
+d. Subset the species into setosa, versicolor, and virginica. Write the R scripts
+and show the last six (6) rows of each species.
+```{r}
+setosa_subset <- iris[iris$Species == "setosa", ]
+versicolor_subset <- iris[iris$Species == "versicolor", ]
+virginica_subset <- iris[iris$Species == "virginica", ]
+
+last_six_setosa <- tail(setosa_subset, 6)
+last_six_versicolor <- tail(versicolor_subset, 6)
+last_six_virginica <- tail(virginica_subset, 6)
+
+last_six_setosa
+last_six_versicolor
+last_six_virginica
+
+```
+
+e. Create a scatterplot of the sepal.length and sepal.width using the different
+species(setosa,versicolor,virginica). Add a title = “Iris Dataset”, subtitle = “Sepal
+width and length, labels for the x and y axis, the pch symbol and colors should be based on
+the species.
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     main = "Iris Dataset",
+     sub = "Sepal Width and Length",
+     xlab = "Sepal Length",
+     ylab = "Sepal Width",
+     pch = 19,
+     col = iris$Species)
+
+legend("topright", legend = levels(iris$Species),
+       col = 1:3, pch = 19)
+
+```
+
+f. Interpret the result.
+The pie chart shows how many of each iris species are in the dataset. Each slice represents the size of each group that determine which species is the most common. The subsets display the last six entries for each species, allowing us to look at their specific measurements, like sepal and petal sizes, and understand how they differ. The scatterplot illustrates the relationship between sepal length and width. If setosa clusters at lower measurements, it means this species tends to have smaller flowers, while if versicolor and virginica overlap, it suggests their sizes are similar, making it harder to tell them apart.
 
