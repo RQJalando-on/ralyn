@@ -38,9 +38,22 @@ for (i in 1:rows) {
 3. Get an input from the user to print the Fibonacci sequence starting from the 1st input
 up to 500. Use repeat and break statements. Write the R Scripts and its output.
 ```{r}
-
+start <- 10
+a <- 0
+b <- 1
+repeat {
+  newfibonacci <- a + b
+  if (newfibonacci > 500) {
+    break
+  }
+  if (newfibonacci >= start) {
+    cat(newfibonacci, "\n")
+  }
+  a <- b
+  b <- newfibonacci
+}
 ```
-**USING BASIC GRAPHICS (plot(),barplot(),pie(),hist())**
+**USING BASIC GRAPHICS (plot(),barplot(),pie(),hist()) **
 
 4. Import the dataset as shown in Figure 1 you have created previously.
 a. What is the R script for importing an excel or a csv file? Display the first 6 rows of
@@ -175,4 +188,102 @@ legend("topright", legend = levels(iris$Species),
 
 f. Interpret the result.
 The pie chart shows how many of each iris species are in the dataset. Each slice represents the size of each group that determine which species is the most common. The subsets display the last six entries for each species, allowing us to look at their specific measurements, like sepal and petal sizes, and understand how they differ. The scatterplot illustrates the relationship between sepal length and width. If setosa clusters at lower measurements, it means this species tends to have smaller flowers, while if versicolor and virginica overlap, it suggests their sizes are similar, making it harder to tell them apart.
+
+**BASIC CLEANING AND TRANSFORMATION OF OBJECTS**
+
+7. Import the alexa-file.xlsx. Check on the variations. Notice that there are ex-
+tra whitespaces among black variants (Black Dot, Black Plus, Black Show, Black
+
+Spot). Also on the white variants (White Dot, White Plus, White Show, White
+Spot).
+
+a. Rename the white and black variants by using gsub() function.
+
+```{r}
+library(readxl)
+alexa_data <- read_excel("/cloud/project/alexa_file.xlsx")
+unique(alexa_data$variation)
+alexa_data$variation <- gsub("Black Dot", "BlackDot", alexa_data$variation)
+alexa_data$variation <- gsub("Black Plus", "BlackPlus", alexa_data$variation)
+alexa_data$variation <- gsub("Black Show", "BlackShow", alexa_data$variation)
+alexa_data$variation <- gsub("Black Spot", "BlackSpot", alexa_data$variation)
+alexa_data$variation <- gsub("White Dot", "WhiteDot", alexa_data$variation)
+alexa_data$variation <- gsub("White Plus", "WhitePlus", alexa_data$variation)
+alexa_data$variation <- gsub("White Show", "WhiteShow", alexa_data$variation)
+alexa_data$variation <- gsub("White Spot", "WhiteSpot", alexa_data$variation)
+unique(alexa_data$variation)
+
+```
+
+b. Get the total number of each variations and save it into another object. Save the
+object as variations.RData. Write the R scripts. What is its result?
+Hint: Use the dplyr package. Make sure to install it before loading the package.
+```{r}
+library(dplyr)
+variations <- alexa_data %>%
+  count(variation)
+print(variations)
+save(variations, file = "variations.RData")
+```
+
+**SAMPLE OUTPUT**
+
+c. From the variations.RData, create a barplot(). Complete the details of the chart
+which include the title, color, labels of each bar.
+```{r}
+library(dplyr)
+
+load("variations.RData")
+variations$variation <- gsub(" +", " ", variations$variation)
+variations$variation <- trimws(variations$variation)
+bardata <- variations$n
+barnames <- variations$variation
+
+barplot(
+  bardata,
+  main = "Counts of Variations",               
+  col = rainbow(length(bardata)),              
+  names.arg = barnames,                        
+  xlab = "Variations",                          
+  ylab = "Counts",                            
+  las = 2,                                      
+  border = "#53131e"                           
+)
+
+text(
+  x = seq_along(bardata), 
+  y = bardata + max(bardata) * 0.05,  
+  labels = bardata, 
+  pos = 3,                             
+  cex = 1,                              
+  col = "#53131e"                       
+)
+
+```
+
+d. Create a barplot() for the black and white variations. Plot it in 1 frame, side by
+side. Complete the details of the chart.
+```{r}
+library(ggplot2)
+library(dplyr)
+load("variations.RData")
+variations$variation <- gsub(" +", " ", variations$variation)
+variations$variation <- trimws(variations$variation)
+bwvariations <- variations %>%
+  filter(grepl("Black|White", variation))
+bardata <- as.matrix(bwvariations$n)
+barnames <- bwvariations$variation
+barplot(
+  bardata,
+  beside = TRUE,                           
+  main = "Counts of Black and White Variations", 
+  col = c("red", "orange", "yellow", "white"),  
+  names.arg = barnames,                   
+  xlab = "Variations",                      
+  ylab = "Counts",                          
+  las = 2,                                
+  border = "black"                          
+)
+text(x = seq_along(bardata), y = bardata, labels = bardata, pos = 3, cex = 0.8, col = "black")
+```
 
