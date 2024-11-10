@@ -120,4 +120,4 @@ ggplot(modelCounts, aes(x = reorder(manufacturer, uniqueModelCount), y = uniqueM
 
 ```
 
-3. 
+3. Plot
